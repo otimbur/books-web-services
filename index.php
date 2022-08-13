@@ -7,12 +7,49 @@
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 
 <script type="text/javascript">
+
+function booksTemplate(book){
+  return`
+      <div class="book">
+      <b>Title</b>: ${book.Title} <br />
+      <b>Author</b>: ${book.Author}<br />
+      <b>Year</b>: ${book.Year} <br />
+      <b>Genre</b>: ${book.Genre} <br />  
+      </div>
+  
+  `;
+}
+        
+
 $(document).ready(function() {  
 
 	$('.category').click(function(e){
         e.preventDefault(); //stop default action of the link
 		cat = $(this).attr("href");  //get category from URL
-		alert(cat);
+
+    var request = $.ajax({
+       url: "api.php?cat=" + cat,
+     method: "GET",
+     dataType: "json"
+   });
+   request.done(function( data ) {
+     console.log(data);
+
+    $("#mytitle").html(data.title);
+
+     $("#list").html("");
+
+     $each (data.book, function (i,item) {
+       let myData = booksTemplate(item);
+       $("<div></div>").html(myData).appendTo("#list");
+       
+       
+     })
+   });
+     request.fail(function(xhr, status, error ) {
+alert('Error - ' + xhr.status + ': ' + xhr.statusText);
+   });
+     
 	});
 });	
 
@@ -20,12 +57,11 @@ $(document).ready(function() {
 </script>
 </head>
 	<body>
-	<h1>Bond Web Service</h1>
-		<a href="year" class="category">Bond Films By Year</a><br />
-		<a href="box" class="category">Bond Films By International Box Office Totals</a>
-		<h3 id="filmtitle">Title Will Go Here</h3>
-		<div id="films">
-			<p>Films will go here</p>
+	<h1>Best 10 books </h1>
+		<a href="year" class="category">Best 10 books based on the year</a><br />
+		<a href="box" class="category">Top 10 books based on sold copies</a>
+		<h3 id="mytitle">Title Will Go Here</h3>
+		<div id="list">
 		</div>
 		<div id="output">Results go here</div>
 	</body>
