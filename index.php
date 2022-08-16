@@ -3,6 +3,27 @@
 <title>Bond Web Service Demo</title>
 <style>
 	body {font-family:georgia;}
+
+  .book{
+    border:1px solid #E77DC2;
+    border-radius: 5px;
+    padding: 5px;
+    margin-bottom:5px;
+    position:relative;   
+  }
+  img{
+    width:100px;
+    height:100px;
+  }
+ 
+  .pic{
+    position:absolute;
+    right:10px;
+    top:10px;
+  }
+  
+  
+ 
 </style>
 <script src="https://code.jquery.com/jquery-latest.js"></script>
 
@@ -11,10 +32,14 @@
 function booksTemplate(book){
   return`
       <div class="book">
-      <b>Title</b>: ${book.Title} <br />
-      <b>Author</b>: ${book.Author}<br />
+      <b>Number</b>: ${book.Book} <br />
+      <b>Title</b>: ${book.Title}<br />
       <b>Year</b>: ${book.Year} <br />
-      <b>Genre</b>: ${book.Genre} <br />  
+      <b>Author</b>: ${book.Author} <br /> 
+      <b>Genre</b>: ${book.Genre} <br />
+      <b>Raiting</b>: ${book.Raiting} <br />
+      <b>Volume Sales</b>: ${book.VolumeSales} <br />
+      <div class="pic"><img src="thumbnails/${book.Image}"/></div>
       </div>
   
   `;
@@ -39,7 +64,7 @@ $(document).ready(function() {
 
      $("#list").html("");
 
-     $each (data.book, function (i,item) {
+     $.each(data.book, function (i,item) {
        let myData = booksTemplate(item);
        $("<div></div>").html(myData).appendTo("#list");
        
